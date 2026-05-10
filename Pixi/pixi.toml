@@ -1,15 +1,22 @@
 [workspace]
 channels = ["conda-forge"]
 name = "alas"
-platforms = ["linux-64"]
+platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
 start = "python gui.py"
 
 [dependencies]
-python = "==3.7.6"
+# python ==3.7.6 cannot be solved on native macOS ARM64.
+python = ">=3.8,<3.9"
+
+# Keep the original conda dependency.
 av = ">=8.0.3,<9"
+
+# Necessary command-line tools for the tutorial / CI environment.
+git = "*"
+adb = "*"
 
 [pypi-dependencies]
 numpy = "==1.21.6"
@@ -23,7 +30,6 @@ uiautomator2cache = "==0.3.0.1"
 wrapt = "==1.13.1"
 retrying = "*"
 lz4 = "*"
-av = "*"
 psutil = "==5.9.3"
 rich = "==11.2.0"
 tqdm = "*"
