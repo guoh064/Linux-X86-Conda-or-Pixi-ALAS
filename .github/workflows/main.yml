@@ -53,7 +53,31 @@ jobs:
         run: |
           cp config/deploy.template-linux-cn.yaml config/deploy.yaml
 
-      - name: Smoke test
+      - name: Real test - start ALAS GUI
         working-directory: AzurLaneAutoScript
         run: |
-          pixi run python -c "import sys; print(sys.executable)"
+          set -euo pipefail
+      
+          pixi run python gui.py > alas.log 2>&1 &
+          ALAS_PID=$!
+      
+          echo "ALAS started with PID: ${ALAS_PID}"
+      
+          # Give ALAS time to initialize.
+          sleep 60
+      
+          # If the process already exited, this is a real startup failure.
+          if ! kill -0 "${ALAS_PID}" 2>/dev/null; then
+            echo "ALAS exited during startup."
+            echo "===== alas.log ====="
+            cat alas.log
+            exit 1
+          fi
+      
+          echo "ALAS is still running after 60 seconds."
+          echo "===== alas.log ====="
+          cat alas.log
+      
+          # Stop the long-running GUI process so the workflow can finish.
+          kill "${ALAS_PID}"
+          wait "${ALAS_PID}" || true
