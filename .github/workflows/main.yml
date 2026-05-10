@@ -1,0 +1,84 @@
+name: Run Pixi on macOS
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  Run-pixi-on-macOS:
+    name: Run pixi on macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Install Pixi
+        run: |
+          curl -fsSL https://pixi.sh/install.sh | sh
+          echo "$HOME/.pixi/bin" >> "$GITHUB_PATH"
+
+      - name: Check Pixi version
+        run: |
+          pixi --version
+
+      - name: Download AzurLaneAutoScript source
+        run: |
+          curl -L https://github.com/LmeSzinc/AzurLaneAutoScript/archive/refs/heads/master.tar.gz -o alas.tar.gz
+          tar -xzf alas.tar.gz
+          mv AzurLaneAutoScript-master AzurLaneAutoScript
+
+      - name: Download pixi.toml
+        working-directory: AzurLaneAutoScript
+        run: |
+          curl -L \
+            https://raw.githubusercontent.com/NEANC/Linux-X86-Conda-or-Pixi-ALAS/master/Pixi/pixi.toml \
+            -o pixi.toml
+
+      - name: Patch pixi.toml for macOS and conda-managed tools
+        working-directory: AzurLaneAutoScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("pixi.toml")
+          text = path.read_text()
+
+          text = text.replace('platforms = ["linux-64"]', 'platforms = ["osx-arm64"]')
+
+          additions = """
+          git = "*"
+          wget = "*"
+          """
+
+          marker = "[pypi-dependencies]"
+          if marker in text and 'git = "*"' not in text:
+              text = text.replace(marker, additions + "\n" + marker)
+
+          path.write_text(text)
+          PY
+
+          cat pixi.toml
+
+      - name: Install Pixi environment
+        working-directory: AzurLaneAutoScript
+        run: |
+          pixi install
+
+      - name: Verify conda-managed tools
+        working-directory: AzurLaneAutoScript
+        run: |
+          pixi run git --version
+          pixi run wget --version
+          pixi run python --version
+          pixi run which git
+          pixi run which wget
+          pixi run which python
+
+      - name: Configure deploy.yaml
+        working-directory: AzurLaneAutoScript
+        run: |
+          cp config/deploy.template-linux-cn.yaml config/deploy.yaml
+
+      - name: Smoke test
+        working-directory: AzurLaneAutoScript
+        run: |
+          pixi run python -c "import sys; print(sys.executable)"
