@@ -20,7 +20,7 @@ adb = "*"
 
 [pypi-dependencies]
 numpy = "==1.24.4"
-scipy = "==1.4.1"
+scipy = "==1.7.3"
 pillow = "*"
 opencv-python = "*"
 imageio = "==2.27.0"
