@@ -33,31 +33,6 @@ jobs:
             https://raw.githubusercontent.com/NEANC/Linux-X86-Conda-or-Pixi-ALAS/osx-arm64/Pixi/pixi.toml \
             -o pixi.toml
 
-      - name: Patch pixi.toml for macOS and conda-managed tools
-        working-directory: AzurLaneAutoScript
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("pixi.toml")
-          text = path.read_text()
-
-          text = text.replace('platforms = ["linux-64"]', 'platforms = ["osx-arm64"]')
-
-          additions = """
-          git = "*"
-          wget = "*"
-          """
-
-          marker = "[pypi-dependencies]"
-          if marker in text and 'git = "*"' not in text:
-              text = text.replace(marker, additions + "\n" + marker)
-
-          path.write_text(text)
-          PY
-
-          cat pixi.toml
-
       - name: Install Pixi environment
         working-directory: AzurLaneAutoScript
         run: |
