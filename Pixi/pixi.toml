@@ -20,6 +20,9 @@ scipy = ">=1.10,<1.11"
 pillow = "*"
 packaging = ">=20.3,<21"
 
+# Avoid building old PyPI pyzmq from source on macOS ARM64.
+pyzmq = "*"
+
 # Necessary command-line tools for the tutorial / CI environment.
 # git = "*"
 # adb = "*"
@@ -56,4 +59,4 @@ starlette = "==0.14.2"
 uvicorn = { version = "==0.17.6", extras = ["standard"] }
 alas-webapp = "==0.3.7"
 zerorpc = "==0.6.3"
-pyzmq = "==22.3.0"
+# pyzmq = "==22.3.0"
