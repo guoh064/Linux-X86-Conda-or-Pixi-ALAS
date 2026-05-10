@@ -30,7 +30,7 @@ jobs:
         working-directory: AzurLaneAutoScript
         run: |
           curl -L \
-            https://raw.githubusercontent.com/NEANC/Linux-X86-Conda-or-Pixi-ALAS/osx-arm64/Pixi/pixi.toml \
+            https://raw.githubusercontent.com/guoh064/Linux-X86-Conda-or-Pixi-ALAS/osx-arm64/Pixi/pixi.toml \
             -o pixi.toml
 
       - name: Install Pixi environment
