@@ -30,7 +30,7 @@ jobs:
         working-directory: AzurLaneAutoScript
         run: |
           curl -L \
-            https://raw.githubusercontent.com/NEANC/Linux-X86-Conda-or-Pixi-ALAS/master/Pixi/pixi.toml \
+            https://raw.githubusercontent.com/NEANC/Linux-X86-Conda-or-Pixi-ALAS/osx-arm64/Pixi/pixi.toml \
             -o pixi.toml
 
       - name: Patch pixi.toml for macOS and conda-managed tools
