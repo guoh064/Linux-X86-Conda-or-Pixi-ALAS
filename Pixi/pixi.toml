@@ -19,7 +19,7 @@ git = "*"
 adb = "*"
 
 [pypi-dependencies]
-numpy = "==1.21.6"
+numpy = "==1.24.4"
 scipy = "==1.4.1"
 pillow = "*"
 opencv-python = "*"
