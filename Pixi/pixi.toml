@@ -13,6 +13,8 @@ python = "==3.8.5"
 
 # Keep the original conda dependency.
 av = ">=8.0.3,<9"
+numpy = "*"
+scipy = "*"
 
 # Necessary command-line tools for the tutorial / CI environment.
 # git = "*"
