@@ -36,7 +36,7 @@ jobs:
       - name: Install Pixi environment
         working-directory: AzurLaneAutoScript
         run: |
-          pixi install -vv
+          pixi install -v
 
       - name: Verify conda-managed tools
         working-directory: AzurLaneAutoScript
