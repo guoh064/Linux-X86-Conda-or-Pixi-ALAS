@@ -19,7 +19,7 @@ av = ">=8.0.3,<9"
 # adb = "*"
 
 [pypi-dependencies]
-numpy = "==1.21.6"
+numpy = "*"
 scipy = "==1.7.3"
 pillow = "*"
 opencv-python = "*"
